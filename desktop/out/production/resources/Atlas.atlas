@@ -1,0 +1,88 @@
+
+Atlas.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ChinookOnRight
+  rotate: false
+  xy: 548, 100
+  size: 300, 96
+  orig: 300, 96
+  offset: 0, 0
+  index: -1
+ChinookRight
+  rotate: false
+  xy: 548, 2
+  size: 300, 96
+  orig: 300, 96
+  offset: 0, 0
+  index: -1
+Ground
+  rotate: false
+  xy: 2, 398
+  size: 800, 600
+  orig: 800, 600
+  offset: 0, 0
+  index: -1
+Skyscraper
+  rotate: false
+  xy: 804, 198
+  size: 200, 800
+  orig: 200, 800
+  offset: 0, 0
+  index: -1
+trees1
+  rotate: false
+  xy: 2, 36
+  size: 544, 160
+  orig: 544, 160
+  offset: 0, 0
+  index: -1
+trees2
+  rotate: false
+  xy: 2, 236
+  size: 544, 160
+  orig: 544, 160
+  offset: 0, 0
+  index: -1
+
+Atlas2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Crash
+  rotate: false
+  xy: 2, 2
+  size: 300, 96
+  orig: 300, 96
+  offset: 0, 0
+  index: -1
+mountain
+  rotate: false
+  xy: 2, 361
+  size: 800, 600
+  orig: 800, 600
+  offset: 0, 0
+  index: -1
+mountains
+  rotate: false
+  xy: 2, 100
+  size: 544, 259
+  orig: 544, 259
+  offset: 0, 0
+  index: -1
+
+Atlas3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sky
+  rotate: false
+  xy: 2, 2
+  size: 800, 600
+  orig: 800, 600
+  offset: 0, 0
+  index: -1
