@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 /********************************************************************************
  * HeliRescueBase Class
  *******************************************************************************/
-public class HeliRescueBase extends Game
+public class Leaf_Base extends Game
 {
     public final int SCREEN_WIDTH = 800;
     public final int SCREEN_HEIGHT = 600;
@@ -26,7 +26,7 @@ public class HeliRescueBase extends Game
         batch = new SpriteBatch();
         font = new BitmapFont();
         atlas = new TextureAtlas("Atlas.atlas");
-        this.setScreen(new HeliRescueTest(this));
+        this.setScreen(new Leaf(this));
     }
 
     /********************************************************************************

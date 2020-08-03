@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  * Last UpdateL 12/29/19
  *
  *******************************************************************************/
-public class Helicopter
+public class Player
 {
     //________________________________________________________________________________
     //Texture Variables
@@ -82,12 +82,6 @@ public class Helicopter
     private int xPos;
     private int yPos;
 
-    private double velocityX;
-    private double velocityY;
-
-    private double accelerationX;
-    private double accelerationY;
-
     //________________________________________________________________________________
     //Debug Variables
     //--------------------------------------------------------------------------------
@@ -97,7 +91,7 @@ public class Helicopter
     /********************************************************************************
      * Helicopter Constructor
      *******************************************************************************/
-    public Helicopter(TextureAtlas atlas)
+    public Player(TextureAtlas atlas)
     {
         //Texture initialization
         engineOffRightTexture = atlas.findRegion("ChinookRight");
@@ -156,12 +150,6 @@ public class Helicopter
         //Starting positions
         xPos = 0;
         yPos = 0;
-
-        velocityY = 0;
-        velocityX = 0;
-
-        accelerationX = 0;
-        accelerationY = 0;
 
         info = "initialized";
     }
@@ -229,46 +217,15 @@ public class Helicopter
     {
         if(( wheelCollisionBoxLeft.overlaps(rect) || wheelCollisionBoxRight.overlaps(rect) ) && !fuselageCollisionBox.overlaps(rect) && !rotorCollisionBox.overlaps(rect))
         {
-            if(Math.abs(velocityY) > MAXIMUM_IMPACT_VELOCITY)
-            {
-                this.isCrashed = true;
-                engineOn = false;
-                info = "CRASHED: EXCEEDED IMPACT VELOCITY";
-            }
-
-            velocityY = velocityY * 0.5;
-            yPos = (int) (rect.y + rect.height);
-
-            if(wheelCollisionBoxLeft.overlaps(rect) && !wheelCollisionBoxRight.overlaps(rect))
-            {
-                velocityX += 0.5;
-                velocityX *= 1.1;
-            }
-            else if(wheelCollisionBoxRight.overlaps(rect) && !wheelCollisionBoxLeft.overlaps(rect))
-            {
-                velocityX -= 0.5;
-                velocityX *= 1.1;
-            }
 
         }
         else if(this.overlaps(rect) && xPos + (fuselageCollisionBox.width / 2) > rect.x && xPos + (fuselageCollisionBox.width / 2) < rect.x + rect.width)
         {
-            this.isCrashed = true;
-            engineOn = false;
-
-            info = "CRASHED: FUSELAGE OR ROTOR CONTACT, MAINTAIN POSITION";
-            info += " " + velocityY;
-
-            velocityY = 0;
-            yPos = (int) (rect.y + rect.height);
 
         }
         else if(this.overlaps(rect))
         {
-            this.isCrashed = true;
-            engineOn = false;
 
-            info = "CRASHED: FUSELAGE OR ROTOR CONTACT";
         }
     }
 
@@ -314,36 +271,14 @@ public class Helicopter
 
         handleHorizontalInput();
 
-        applyDrag();
-
         handleVerticalInput();
 
         //applyEnginePower();
-
-        applyLift();
-
-        applyLimits();
-
-        //Fake Calculus
-        velocityY += accelerationY;
-        yPos += velocityY;
-
-        //Fake Calculus
-        velocityX += accelerationX;
-        xPos += velocityX;
-
 
         //Collisions
         if(yPos < 0)
         {
             yPos = 0;
-            if(Math.abs(velocityY) > MAXIMUM_IMPACT_VELOCITY)
-            {
-                isCrashed = true;
-                engineOn = false;
-            }
-
-            velocityY = 0;
         }
 
         checkEngineToggle();
@@ -364,12 +299,8 @@ public class Helicopter
         {
             System.out.println("______________________________________________________________________");
             System.out.println("Position X: " + xPos);
-            System.out.println("Velocity X: " + velocityX);
-            System.out.println("Acceleration X: " + accelerationX);
             System.out.println();
             System.out.println("Position Y: " + yPos);
-            System.out.println("Velocity Y: " + velocityY);
-            System.out.println("Acceleration Y: " + accelerationY);
             System.out.println();
             System.out.println("isCrashed: " + isCrashed);
             System.out.println("engineOn: " + engineOn);
@@ -394,15 +325,12 @@ public class Helicopter
      *******************************************************************************/
     private void handleHorizontalInput()
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && engineOn && !isCrashed) {
-            this.accelerationX += 0.3;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && engineOn && !isCrashed) {
-            this.accelerationX -= 0.3;
-        } else {
-            if(accelerationX > 0)
-                accelerationX -= accelerationX * 0.5;
-            if(accelerationX < 0.001)
-                accelerationX = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        {
+            this.xPos += 10;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        {
+            this.xPos -= 10;
         }
     }
 
@@ -411,76 +339,13 @@ public class Helicopter
      *******************************************************************************/
     private void handleVerticalInput()
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && engineOn && !isCrashed) {
-            if(velocityY < -10)
-            {
-                this.accelerationY += Math.abs(this.accelerationY * 1.01);
-            }
-            else
-                this.accelerationY += Math.abs(this.accelerationY * 1.001);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            this.yPos += 10;
         }
-        else if(Gdx.input.isKeyPressed(Input.Keys.UP) && engineOn && !isCrashed)
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
-            this.accelerationY += 0.5;
+            this.yPos -= 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && engineOn && !isCrashed) {
-            this.accelerationY -= 0.1;
-        } else {
-            accelerationY -= accelerationY * 0.1;
-            accelerationY -= 0.1;
-        }
-    }
-
-    /********************************************************************************
-     * applyDrag
-     *******************************************************************************/
-    private void applyDrag()
-    {
-        velocityX = velocityX * 0.80;
-
-        if(Math.abs(velocityX) < 0.5)
-            velocityX = 0;
-    }
-
-    /********************************************************************************
-     * applyLift
-     *******************************************************************************/
-    private void applyLift()
-    {
-        if(velocityX > 5) {accelerationY += 0.05;}
-        if(velocityX < -5) {accelerationY += 0.05;}
-    }
-
-    /********************************************************************************
-     * applyEnginePower
-     *******************************************************************************/
-    private void applyEnginePower()
-    {
-        accelerationY += 0.3;
-    }
-
-    /********************************************************************************
-     * applyLimits
-     *******************************************************************************/
-    private void applyLimits()
-    {
-        //Horizontal Acceleration Limit
-        if(accelerationX > 2) { accelerationX = 2; }
-        if(accelerationX < -2) { accelerationX = -2; }
-
-        //Horizontal Velocity Limit
-        if(velocityX > 10) { velocityX = 10; }
-        if(velocityX < -10) { velocityX = -10; }
-
-        //Vertical Acceleration Limit
-        if(accelerationY > 2) { accelerationY = 2; }
-        if(accelerationY < -2) { accelerationY = -2; }
-
-        //Vertical Velocity Limit
-        if(velocityY > 10) { velocityY = 10; }
-
-
-        if(velocityY < -50) {velocityY = -50;}
     }
 
     /********************************************************************************
@@ -488,17 +353,7 @@ public class Helicopter
      *******************************************************************************/
     private void checkFacingDirection()
     {
-        //Make heli face left or right
-        if(velocityX > 6 && isFacingLeft)
-        {
-            isFacingLeft = false;
-            directionFlipTime = TimeUtils.millis();
-        }
-        if(velocityX < -6 && !isFacingLeft)
-        {
-            isFacingLeft = true;
-            directionFlipTime = TimeUtils.millis();
-        }
+
     }
 
     /********************************************************************************
@@ -528,7 +383,7 @@ public class Helicopter
         double secondsElapsed = (TimeUtils.millis() - directionFlipTime) / 1000.0;
         double fraction = secondsElapsed / 3;
 
-        return "" + velocityY;
+        return "";
     }
 
     /********************************************************************************
@@ -602,16 +457,10 @@ public class Helicopter
             }
         }
 
-        //Account for horizontal velocity
-        camera.position.x += (float) -velocityX * 2;
 
         //Vertical positioning
         camera.position.y += camera.viewportHeight / 2;
         camera.position.y -= 100;
-
-        //Account for vertical speed
-        camera.position.y -= (float) velocityY * 2;
-
 
         if(verticalCrossingSecondsElapsed < VERTICAL_TRANSITION_TIME)
         {
@@ -660,38 +509,6 @@ public class Helicopter
     public int getY()
     {
         return yPos;
-    }
-
-    /********************************************************************************
-     * getVelocityX
-     *******************************************************************************/
-    public double getVelocityX()
-    {
-        return velocityX;
-    }
-
-    /********************************************************************************
-     * getVelocityY
-     *******************************************************************************/
-    public double getVelocityY()
-    {
-        return velocityY;
-    }
-
-    /********************************************************************************
-     * getAccelerationX
-     *******************************************************************************/
-    public double getAccelerationX()
-    {
-        return accelerationX;
-    }
-
-    /********************************************************************************
-     * getAccelerationY
-     *******************************************************************************/
-    public double getAccelerationY()
-    {
-        return accelerationY;
     }
 
     /********************************************************************************

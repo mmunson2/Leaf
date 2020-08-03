@@ -20,9 +20,9 @@ import java.util.Random;
 /********************************************************************************
  * HeliRescueTest Class
  *******************************************************************************/
-public class HeliRescueTest implements Screen
+public class Leaf implements Screen
 {
-    final HeliRescueBase game;
+    final Leaf_Base game;
 
     Random random;
 
@@ -40,7 +40,7 @@ public class HeliRescueTest implements Screen
     boolean attachedToHeli = true;
     long flipTime = TimeUtils.nanoTime();
 
-    private Helicopter heli;
+    private Player heli;
 
     private Array<Skyscraper> skyscrapers;
 
@@ -51,13 +51,13 @@ public class HeliRescueTest implements Screen
     /********************************************************************************
      * HeliRescueTest Constructor
      *******************************************************************************/
-    public HeliRescueTest(final HeliRescueBase game)
+    public Leaf(final Leaf_Base game)
     {
         this.game = game;
 
         this.random = new Random();
 
-        heli = new Helicopter(game.atlas);
+        heli = new Player(game.atlas);
 
         ground = game.atlas.findRegion("Ground");
         sky = game.atlas.findRegion("sky");
@@ -121,8 +121,6 @@ public class HeliRescueTest implements Screen
     @Override
     public void render(float delta)
     {
-
-
         float cameraX = camera.position.x - camera.viewportWidth / 2;
         float cameraY = camera.position.y - camera.viewportHeight / 2;
 
