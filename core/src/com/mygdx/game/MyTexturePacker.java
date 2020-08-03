@@ -9,7 +9,4 @@ public class MyTexturePacker
         TexturePacker.process("core/assets", "core/assets","Atlas");
 
     }
-
-
-
 }

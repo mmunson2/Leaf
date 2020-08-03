@@ -281,13 +281,7 @@ public class Player
             yPos = 0;
         }
 
-        checkEngineToggle();
-
         updateCollisionBox();
-
-        checkFacingDirection();
-
-        checkVerticalTransition(originalYPos);
     }
 
     /********************************************************************************
@@ -349,33 +343,6 @@ public class Player
     }
 
     /********************************************************************************
-     * checkFacingDirection
-     *******************************************************************************/
-    private void checkFacingDirection()
-    {
-
-    }
-
-    /********************************************************************************
-     * checkVerticalTransition
-     *******************************************************************************/
-    private void checkVerticalTransition(int originalYPos)
-    {
-        //Check if we crossed the vertical transition altitude
-        if(originalYPos > VERTICAL_TRANSITION_ALTITUDE && yPos < VERTICAL_TRANSITION_ALTITUDE)
-        {
-            double verticalCrossingSecondsElapsed = (TimeUtils.millis() - altitudeTransitionTime) / 1000.0;
-            altitudeTransitionTime = TimeUtils.millis();
-        }
-        if(originalYPos < VERTICAL_TRANSITION_ALTITUDE && yPos > VERTICAL_TRANSITION_ALTITUDE)
-        {
-            double verticalCrossingSecondsElapsed = (TimeUtils.millis() - altitudeTransitionTime) / 1000.0;
-            altitudeTransitionTime = TimeUtils.millis();
-        }
-    }
-
-
-    /********************************************************************************
      * getInfo
      *******************************************************************************/
     public String getInfo()
@@ -384,21 +351,6 @@ public class Player
         double fraction = secondsElapsed / 3;
 
         return "";
-    }
-
-    /********************************************************************************
-     * checkEngineToggle
-     *******************************************************************************/
-    public void checkEngineToggle()
-    {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.R))
-        {
-            if((TimeUtils.millis() - engineToggleTime) * 1000 > 1)
-            {
-                engineOn = !engineOn;
-                engineToggleTime = TimeUtils.millis();
-            }
-        }
     }
 
     /********************************************************************************

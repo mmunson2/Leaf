@@ -11,14 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Random;
 
 
 /********************************************************************************
- * HeliRescueTest Class
+ * Leaf Class
  *******************************************************************************/
 public class Leaf implements Screen
 {
@@ -28,28 +27,17 @@ public class Leaf implements Screen
 
     private TextureRegion ground;
     private TextureRegion sky;
-    private TextureRegion mountains;
-    private TextureRegion mountain;
-    private TextureRegion trees1;
-    private TextureRegion trees2;
-
 
     private ShapeRenderer renderer;
 
     private OrthographicCamera camera;
-    boolean attachedToHeli = true;
+    boolean attachedToPlayer = true;
     long flipTime = TimeUtils.nanoTime();
 
-    private Player heli;
-
-    private Array<Skyscraper> skyscrapers;
-
-    public GLProfiler profiler;
-
-    boolean debugFlag = false;
+    private Player player;
 
     /********************************************************************************
-     * HeliRescueTest Constructor
+     * Constructor
      *******************************************************************************/
     public Leaf(final Leaf_Base game)
     {
@@ -57,33 +45,16 @@ public class Leaf implements Screen
 
         this.random = new Random();
 
-        heli = new Player(game.atlas);
+        player = new Player(game.atlas);
 
         ground = game.atlas.findRegion("Ground");
         sky = game.atlas.findRegion("sky");
-        mountain = game.atlas.findRegion("mountain");
-        mountains = game.atlas.findRegion("mountains");
-        trees1 = game.atlas.findRegion("trees1");
-        trees2 = game.atlas.findRegion("trees2");
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.SCREEN_WIDTH,game.SCREEN_HEIGHT);
 
         game.batch = new SpriteBatch();
-
         game.font = new BitmapFont();
-
-        profiler = new GLProfiler(Gdx.graphics);
-        profiler.enable();
-
-
-        skyscrapers = new Array<Skyscraper>();
-        for(int i = 0; i < 100; i++)
-        {
-            int height = random.nextInt(3) + 1;
-
-            skyscrapers.insert(i, new Skyscraper(i * 1000 + 1000, 0, height, game.atlas));
-        }
 
         renderer = new ShapeRenderer();
     }
@@ -124,7 +95,6 @@ public class Leaf implements Screen
         float cameraX = camera.position.x - camera.viewportWidth / 2;
         float cameraY = camera.position.y - camera.viewportHeight / 2;
 
-
         Gdx.gl.glClearColor(0,0.5f,0.9f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -135,84 +105,46 @@ public class Leaf implements Screen
 
         game.batch.begin();
         game.batch.draw(sky,cameraX,cameraY);
-        wrapRegion(mountain, cameraX - cameraX / 100, cameraY - cameraY / 100);
-        wrapRegion(mountains, cameraX - cameraX / 50, cameraY - cameraY / 50);
-        wrapRegion(trees1, cameraX - cameraX / 10, cameraY - cameraY / 10);
-        wrapRegion(trees2, 0,  0);
+        //wrapRegion(mountain, cameraX - cameraX / 100, cameraY - cameraY / 100);
+        //wrapRegion(mountains, cameraX - cameraX / 50, cameraY - cameraY / 50);
+        //wrapRegion(trees1, cameraX - cameraX / 10, cameraY - cameraY / 10);
+        //wrapRegion(trees2, 0,  0);
         wrapRegion(ground, 0,-101);
 
-        game.batch.draw(heli.getTexture(),heli.getX(),heli.getY());
+        game.batch.draw(player.getTexture(), player.getX(), player.getY());
 
-        drawBuildings();
-        game.font.draw(game.batch, heli.getInfo(), cameraX + 100, cameraY + 100);
+        game.font.draw(game.batch, "Dialogue Test", cameraX + 100,cameraY + 80);
+
 
         game.batch.end();
 
-        heli.update();
 
-        if(attachedToHeli)
-            heli.updateCamera(camera);
+        player.update();
+
+        //Do Camera Updates
+        if(attachedToPlayer)
+            player.updateCamera(camera);
         else
             CameraController.update(camera);
 
-
+        //Check if camera should detach
         if(Gdx.input.isKeyPressed(Input.Keys.C))
         {
             if(TimeUtils.nanoTime() - flipTime > 1000000000)
             {
-                attachedToHeli = !attachedToHeli;
+                attachedToPlayer = !attachedToPlayer;
                 flipTime = TimeUtils.nanoTime();
             }
         }
 
-        checkBuildingCollisions();
-
-
+        //Demonstrating how to quickly draw shapes
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.MAGENTA);
-        //renderer.rect(heli.getFuselageCollisionBox().x, heli.getFuselageCollisionBox().y, heli.getFuselageCollisionBox().width, heli.getFuselageCollisionBox().height);
-        //renderer.rect(heli.getRotorCollisionBox().x, heli.getRotorCollisionBox().y, heli.getRotorCollisionBox().width, heli.getRotorCollisionBox().height);
-        //renderer.rect(heli.getWheelCollisionBox().x, heli.getWheelCollisionBox().y, heli.getWheelCollisionBox().width, heli.getWheelCollisionBox().height);
-
-        //renderer.setColor(Color.RED);
-        //renderer.rect(heli.getWheelCollisionBoxLeft().x, heli.getWheelCollisionBoxLeft().y, heli.getWheelCollisionBoxLeft().width, heli.getWheelCollisionBoxLeft().height);
-        //renderer.setColor(Color.BLUE);
-        //renderer.rect(heli.getWheelCollisionBoxRight().x, heli.getWheelCollisionBoxRight().y, heli.getWheelCollisionBoxRight().width, heli.getWheelCollisionBoxRight().height);
+        //renderer.rect(0,0, game.SCREEN_WIDTH, 50);
+        
         renderer.end();
 
-
-        profiler.reset();
-    }
-
-    public void drawBuildings()
-    {
-        int heightFactor;
-        int yPos;
-
-        for(Skyscraper skyscraper : skyscrapers)
-        {
-            heightFactor = skyscraper.getHeightFactor();
-            yPos = skyscraper.getyPos();
-
-            for(int i = 0; i < heightFactor; i++)
-            {
-                game.batch.draw(skyscraper.getTexture(), skyscraper.getXPos(), yPos);
-                yPos += skyscraper.getHeight();
-            }
-
-        }
-    }
-
-    public void checkBuildingCollisions()
-    {
-        for(Skyscraper skyscraper : skyscrapers)
-        {
-            if(Math.abs(skyscraper.getXPos() - heli.getX()) < 1000)
-            {
-                heli.checkCollision(skyscraper.getCollisionBounds());
-            }
-        }
     }
 
 

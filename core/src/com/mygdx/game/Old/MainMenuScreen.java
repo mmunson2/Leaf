@@ -1,9 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.game.Old;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.mygdx.game.Old.GameScreen;
+import com.mygdx.game.Old.LearningGDX;
 
 public class MainMenuScreen implements Screen
 {
