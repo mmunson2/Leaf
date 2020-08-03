@@ -19,7 +19,7 @@ import java.util.Random;
 /********************************************************************************
  * Leaf Class
  *******************************************************************************/
-public class Leaf implements Screen
+public class DemoRoom1 implements Screen
 {
     final Leaf_Base game;
 
@@ -31,6 +31,7 @@ public class Leaf implements Screen
     private ShapeRenderer renderer;
 
     private OrthographicCamera camera;
+
     boolean attachedToPlayer = true;
     long flipTime = TimeUtils.nanoTime();
 
@@ -39,7 +40,7 @@ public class Leaf implements Screen
     /********************************************************************************
      * Constructor
      *******************************************************************************/
-    public Leaf(final Leaf_Base game)
+    public DemoRoom1(final Leaf_Base game)
     {
         this.game = game;
 
@@ -103,20 +104,18 @@ public class Leaf implements Screen
         game.batch.setProjectionMatrix(camera.combined);
 
 
+        //Begin Drawing
         game.batch.begin();
         game.batch.draw(sky,cameraX,cameraY);
-        //wrapRegion(mountain, cameraX - cameraX / 100, cameraY - cameraY / 100);
-        //wrapRegion(mountains, cameraX - cameraX / 50, cameraY - cameraY / 50);
-        //wrapRegion(trees1, cameraX - cameraX / 10, cameraY - cameraY / 10);
-        //wrapRegion(trees2, 0,  0);
+
         wrapRegion(ground, 0,-101);
 
         game.batch.draw(player.getTexture(), player.getX(), player.getY());
 
         game.font.draw(game.batch, "Dialogue Test", cameraX + 100,cameraY + 80);
 
-
         game.batch.end();
+        //End Drawing
 
 
         player.update();
@@ -141,8 +140,8 @@ public class Leaf implements Screen
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.MAGENTA);
-        //renderer.rect(0,0, game.SCREEN_WIDTH, 50);
-        
+        renderer.rect(0,0, game.SCREEN_WIDTH, 50);
+
         renderer.end();
 
     }

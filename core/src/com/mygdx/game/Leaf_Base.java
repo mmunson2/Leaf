@@ -26,7 +26,7 @@ public class Leaf_Base extends Game
         batch = new SpriteBatch();
         font = new BitmapFont();
         atlas = new TextureAtlas("Atlas.atlas");
-        this.setScreen(new Leaf(this));
+        this.setScreen(new DemoRoom1(this));
     }
 
     /********************************************************************************
