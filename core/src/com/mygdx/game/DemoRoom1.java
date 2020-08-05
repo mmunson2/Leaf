@@ -3,15 +3,15 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.game.Dino.Dino;
+
 
 import java.util.Random;
 
@@ -25,15 +25,17 @@ public class DemoRoom1 implements Screen
 
     Random random;
 
-    private TextureRegion ground;
-    private TextureRegion sky;
+    private TextureRegion background;
 
     private ShapeRenderer renderer;
 
     private OrthographicCamera camera;
 
-    boolean attachedToPlayer = true;
+    boolean cameraAttachedToPlayer = true;
     long flipTime = TimeUtils.nanoTime();
+
+    Dino dino;
+    String dialogue = "";
 
     private Player player;
 
@@ -46,10 +48,9 @@ public class DemoRoom1 implements Screen
 
         this.random = new Random();
 
-        player = new Player(game.atlas);
+        this.player = new Player(game.atlas);
 
-        ground = game.atlas.findRegion("Ground");
-        sky = game.atlas.findRegion("sky");
+        background = game.atlas.findRegion("battleback10");
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.SCREEN_WIDTH,game.SCREEN_HEIGHT);
@@ -58,33 +59,8 @@ public class DemoRoom1 implements Screen
         game.font = new BitmapFont();
 
         renderer = new ShapeRenderer();
-    }
 
-
-    /********************************************************************************
-     * wrapRegion
-     *******************************************************************************/
-    private void wrapRegion(TextureRegion region, float x, float y)
-    {
-        float cameraLeftBound = camera.position.x - camera.viewportWidth / 2;
-        float cameraRightBound = cameraLeftBound + camera.viewportWidth;
-
-        float textureLeftEdge = x;
-        float textureRightEdge = x + region.getRegionWidth();
-
-        while(cameraLeftBound < textureLeftEdge)
-        {
-            game.batch.draw(region, textureLeftEdge - region.getRegionWidth(), y);
-            textureLeftEdge -= region.getRegionWidth();
-        }
-
-        while(cameraRightBound > textureRightEdge)
-        {
-            game.batch.draw(region, textureRightEdge, y);
-            textureRightEdge += region.getRegionWidth();
-        }
-
-        game.batch.draw(region,x, y);
+        dino = new Dino("Dialogue/Go Away.dino");
     }
 
     /********************************************************************************
@@ -106,43 +82,47 @@ public class DemoRoom1 implements Screen
 
         //Begin Drawing
         game.batch.begin();
-        game.batch.draw(sky,cameraX,cameraY);
+        game.batch.draw(background, 0,0, 1200, 700);
 
-        wrapRegion(ground, 0,-101);
+        game.batch.draw(player.getTexture(), player.getXPos(), player.getYPos());
 
-        game.batch.draw(player.getTexture(), player.getX(), player.getY());
-
-        game.font.draw(game.batch, "Dialogue Test", cameraX + 100,cameraY + 80);
+        game.font.draw(game.batch, dialogue, cameraX + 100,cameraY + 80);
 
         game.batch.end();
         //End Drawing
 
 
-        player.update();
-
-        //Do Camera Updates
-        if(attachedToPlayer)
-            player.updateCamera(camera);
-        else
-            CameraController.update(camera);
-
-        //Check if camera should detach
-        if(Gdx.input.isKeyPressed(Input.Keys.C))
+        if(InputHandler.detachCameraToggle())
         {
-            if(TimeUtils.nanoTime() - flipTime > 1000000000)
-            {
-                attachedToPlayer = !attachedToPlayer;
-                flipTime = TimeUtils.nanoTime();
-            }
+            this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
         }
 
-        //Demonstrating how to quickly draw shapes
-        renderer.setProjectionMatrix(camera.combined);
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.MAGENTA);
-        renderer.rect(0,0, game.SCREEN_WIDTH, 50);
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            dialogue = dino.getDialogue();
+        }
 
-        renderer.end();
+        Direction playerDirection = InputHandler.getPlayerMovementDirection();
+        this.player.move(playerDirection);
+
+        if(cameraAttachedToPlayer)
+        {
+            CameraController.centerOn(player.getXPos(), player.getYPos(), camera);
+        }
+        else
+        {
+            Direction cameraDirection = InputHandler.getCameraMovementDirection();
+            CameraController.move(cameraDirection, camera);
+        }
+
+
+        //Demonstrating how to quickly draw shapes
+        //renderer.setProjectionMatrix(camera.combined);
+        //renderer.begin(ShapeRenderer.ShapeType.Filled);
+        //renderer.setColor(Color.MAGENTA);
+        //renderer.rect(0,0, game.SCREEN_WIDTH, 50);
+
+        //renderer.end();
 
     }
 
@@ -154,8 +134,7 @@ public class DemoRoom1 implements Screen
     @Override
     public void dispose()
     {
-        game.batch.dispose();
-        game.atlas.dispose();
+        renderer.dispose();
     }
 
 
