@@ -35,11 +35,16 @@ public class DemoRoom3 implements Screen {
     long flipTime = TimeUtils.nanoTime();
 
     Dino dino;
-    String dialogue = "";
+    Dino dino2;
+
+    String dialogueNPC1 = "";
+    String prevDialogue = "";
 
     private PlayerAnimWalk player;
 
     private Static_Test_NPC npc;
+    private Static_Test_NPC2 npc2;
+    int npcWithFocus;
 
     private SpeechBox npcSpeechBox;
     private boolean player_off_edge;
@@ -59,6 +64,11 @@ public class DemoRoom3 implements Screen {
 
     float elapsedTime;
 
+    private String[] traits;
+    private int npc1Distance;
+    private int npc2Distance;
+
+
     /********************************************************************************
      * Constructor
      *******************************************************************************/
@@ -68,12 +78,12 @@ public class DemoRoom3 implements Screen {
         this.random = new Random();
 
         this.npc = new Static_Test_NPC(game.atlas);
+        this.npc2 = new Static_Test_NPC2();
 
-        this.npcSpeechBox = new SpeechBox(npc.getXPos() + 70, npc.getYPos() - 10);
 
-        background = game.atlas.findRegion("battleback10");
+        background = new TextureRegion(new Texture("core\\assets\\DemoRoom3\\background.png"));
 
-        world_east_edge = 140 + background.getRegionWidth();
+        world_east_edge = background.getRegionWidth();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
@@ -84,8 +94,14 @@ public class DemoRoom3 implements Screen {
         createPlayer();
 
         renderer = new ShapeRenderer();
-
         initializeDino();
+        initializeTraits();
+    }
+
+    private void initializeTraits() {
+        traits = new String[2];
+        traits[0] = "PLAYER_HEALTH";
+        traits[1] = "PLAYER_DISTANCE_FROM_EDGE";
     }
 
     private void createPlayer() {
@@ -94,7 +110,7 @@ public class DemoRoom3 implements Screen {
         int index = 0;
 
         img = new Texture("core\\assets\\DemoRoom3\\playerLeft.png");
-        TextureRegion[][] tmpFrames = TextureRegion.split (img,96,96);
+        TextureRegion[][] tmpFrames = TextureRegion.split(img, 96, 96);
 
         playerWalkLeftFrames = new TextureRegion[7];
 
@@ -105,7 +121,7 @@ public class DemoRoom3 implements Screen {
         }
 
         img = new Texture("core\\assets\\DemoRoom3\\playerRight.png");
-        tmpFrames = TextureRegion.split (img,96,96);
+        tmpFrames = TextureRegion.split(img, 96, 96);
 
         playerWalkRightFrames = new TextureRegion[7];
 
@@ -118,8 +134,8 @@ public class DemoRoom3 implements Screen {
         }
 
 
-        playerWalkLeft = new Animation(1f/12f, playerWalkLeftFrames);
-        playerWalkRight = new Animation(1f/12f, playerWalkRightFrames);
+        playerWalkLeft = new Animation(1f / 12f, playerWalkLeftFrames);
+        playerWalkRight = new Animation(1f / 12f, playerWalkRightFrames);
 
         playerIdleLeft = new Texture("core\\assets\\DemoRoom3\\playerIdleLeft.png");
         playerIdleRight = new Texture("core\\assets\\DemoRoom3\\playerIdleRight.png");
@@ -131,7 +147,9 @@ public class DemoRoom3 implements Screen {
 
     private void initializeDino() {
         dino = new Dino("core\\assets\\Dialogue\\PlayerHealthDialogue.dino");
-        dino.setStaticVariable("PLAYER_NAME", "Melvin Song");
+        dino2 = new Dino("core\\assets\\Dialogue\\PlayerHealthDialogue.dino");
+
+        dino.setStaticVariable("PLAYER_NAME", "Melvin");
     }
 
     /********************************************************************************
@@ -156,20 +174,21 @@ public class DemoRoom3 implements Screen {
 
         calculateTraits();
 
+        calcultateNPCFocus();
+
 
         //Begin Drawing
         game.batch.begin();
-        game.batch.draw(background, 0, 0, 1200, 700);
+        game.batch.draw(background, 0, 0, 2512, 2096);
 
         game.batch.draw(npc.getTexture(), npc.getXPos(), npc.getYPos());
+        game.batch.draw(npc2.getTexture(), npc2.getXPos(), npc2.getYPos());
 
-        game.batch.draw(npcSpeechBox.getTexture(), npcSpeechBox.getXPos(), npcSpeechBox.getYPos());
-        game.font.draw(game.batch, dialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
-
+        drawDialogue(delta);
 
         game.batch.draw(player.getTexture(elapsedTime), player.getXPos(), player.getYPos());
 
-        game.font.draw(game.batch, player.getPlayer_health() + "", player.getXPos() + 47, player.getYPos() + 135);
+        drawPlayerHealth();
 
         game.batch.end();
         //End Drawing
@@ -181,9 +200,11 @@ public class DemoRoom3 implements Screen {
             this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            dialogue = dino.getDialogue();
-        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        dialogueNPC1 = dino.getDialogue();
+        dialogueNPC1 = dino2.getDialogue();
+
+//        }
 
         if (cameraAttachedToPlayer) {
             CameraController.centerOn(player.getXPos(), player.getYPos(), camera);
@@ -203,13 +224,79 @@ public class DemoRoom3 implements Screen {
 
     }
 
+    private void calcultateNPCFocus() {
+        calculateNPCDistance();
+        if (npc1Distance < npc2Distance) {
+            npcWithFocus = 1;
+        } else npcWithFocus = 2;
+    }
+
+
+    private void calculateNPCDistance() {
+        npc1Distance = (int) Math.abs(Math.sqrt((Math.abs(npc.getXPos() - player.getXPos()) *
+                (Math.abs(npc.getXPos() - player.getXPos()))) + ((Math.abs(npc.getYPos() - player.getYPos()) *
+                (Math.abs(npc.getYPos() - player.getYPos()))))));
+        npc2Distance = (int) Math.abs(Math.sqrt((Math.abs(npc2.getXPos() - player.getXPos()) *
+                (Math.abs(npc2.getXPos() - player.getXPos()))) + ((Math.abs(npc2.getYPos() - player.getYPos()) *
+                (Math.abs(npc2.getYPos() - player.getYPos()))))));
+        if (npc1Distance < npc2Distance) {
+            npcWithFocus = 1;
+        } else npcWithFocus = 2;
+    }
+
+
+    private void drawPlayerHealth() {
+        game.font.draw(game.batch, (int) player.getPlayer_health() + "HP", player.getXPos() + 29, player.getYPos() - 10);
+    }
+
+    private void drawDialogue(float currentTime) {
+        calculateNPCDistance();
+        String tempDialogue = dialogueNPC1;
+
+        if (npcWithFocus == 1) {
+            this.npcSpeechBox = new SpeechBox(npc.getXPos() + 70, npc.getYPos() - 10);
+        } else {
+            this.npcSpeechBox = new SpeechBox(npc2.getXPos() + 70, npc2.getYPos() - 10);
+        }
+
+        if (npc1Distance < 300 || player.getXPos() - npc.getXPos() > 0 || npc2Distance < 300) {
+            if (tempDialogue.length() > 0) {
+                game.batch.draw(npcSpeechBox.getTexture(), npcSpeechBox.getXPos(), npcSpeechBox.getYPos());
+
+                prevDialogue = tempDialogue;
+
+                if (tempDialogue.length() > 33) {
+
+
+                    double middle = Math.floor(tempDialogue.length() / 2);
+                    int before = tempDialogue.lastIndexOf(' ', (int) middle);
+                    int after = tempDialogue.indexOf(' ', (int) (middle + 1));
+
+                    if (middle - before < after - middle) {
+                        middle = before;
+                    } else {
+                        middle = after;
+                    }
+
+                    String dialogue1 = tempDialogue.substring(0, (int) middle);
+                    String dialogue2 = tempDialogue.substring((int) middle + 1);
+
+                    game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 2.9)), (npcSpeechBox.getYPos() + 36));
+                    game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                } else {
+                    game.font.draw(game.batch, dialogueNPC1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC1.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                }
+            }
+        }
+    }
+
 
     private void calculateTraits() {
-        dino.setTraitValue("PLAYER_DISTANCE_FROM_EDGE", (((player.getXPos() - npc.getXPos() - 200) / ((world_east_edge - npc.getXPos() - 200))) * 100));
+
+        dino.setTraitValue(traits[1], (((player.getXPos() - npc.getXPos() - 200) / ((world_east_edge - npc.getXPos() - 200))) * 100));
         if (player_off_edge) {
-            dino.setTraitValue("PLAYER_DISTANCE_FROM_EDGE", 100);
+            dino.setTraitValue(traits[1], 100);
         }
-        dino.setTraitValue("PLAYER_HEALTH", player.getPlayer_health());
 
     }
 
@@ -221,7 +308,7 @@ public class DemoRoom3 implements Screen {
             }
         } else if (player.getXPos() < world_east_edge) {
             if (player.getPlayer_health() < 100) {
-                player.addPlayer_health(1);
+                player.addPlayer_health(.01);
                 player_off_edge = false;
             }
         }
@@ -258,3 +345,4 @@ public class DemoRoom3 implements Screen {
     }
 
 }
+

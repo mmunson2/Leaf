@@ -38,8 +38,8 @@ public class PlayerAnimWalk {
         this.playerWalkLeft = playerWalkLeft;
         this.playerWalkRight = playerWalkRight;
 
-        this.xPos = 250;
-        this.yPos = 200;
+        this.xPos = 1750;
+        this.yPos = 1100;
 
         player_health = 100;
 

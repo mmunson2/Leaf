@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -23,6 +24,7 @@ public class Leaf_Base extends Game
     @Override
     public void create()
     {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         batch = new SpriteBatch();
         font = new BitmapFont();
         atlas = new TextureAtlas("Atlas.atlas");
