@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -35,13 +37,27 @@ public class DemoRoom3 implements Screen {
     Dino dino;
     String dialogue = "";
 
-    private Player player;
+    private PlayerAnimWalk player;
 
     private Static_Test_NPC npc;
 
     private SpeechBox npcSpeechBox;
     private boolean player_off_edge;
     private int world_east_edge;
+
+    SpriteBatch batch;
+    Texture img;
+    Texture playerIdleRight;
+    Texture playerIdleLeft;
+    Texture playerJumpRight;
+    Texture playerJumpLeft;
+    TextureRegion[] playerWalkLeftFrames;
+    TextureRegion[] playerWalkRightFrames;
+
+    Animation playerWalkLeft;
+    Animation playerWalkRight;
+
+    float elapsedTime;
 
     /********************************************************************************
      * Constructor
@@ -51,11 +67,9 @@ public class DemoRoom3 implements Screen {
 
         this.random = new Random();
 
-        this.player = new Player(game.atlas);
-
         this.npc = new Static_Test_NPC(game.atlas);
 
-        this.npcSpeechBox = new SpeechBox(npc.getXPos() + 100, npc.getYPos() - 20);
+        this.npcSpeechBox = new SpeechBox(npc.getXPos() + 70, npc.getYPos() - 10);
 
         background = game.atlas.findRegion("battleback10");
 
@@ -67,9 +81,52 @@ public class DemoRoom3 implements Screen {
         game.batch = new SpriteBatch();
         game.font = new BitmapFont();
 
+        createPlayer();
+
         renderer = new ShapeRenderer();
 
         initializeDino();
+    }
+
+    private void createPlayer() {
+
+        // creating character
+        int index = 0;
+
+        img = new Texture("core\\assets\\DemoRoom3\\playerLeft.png");
+        TextureRegion[][] tmpFrames = TextureRegion.split (img,96,96);
+
+        playerWalkLeftFrames = new TextureRegion[7];
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 1; j++) {
+                playerWalkLeftFrames[index++] = tmpFrames[j][i];
+            }
+        }
+
+        img = new Texture("core\\assets\\DemoRoom3\\playerRight.png");
+        tmpFrames = TextureRegion.split (img,96,96);
+
+        playerWalkRightFrames = new TextureRegion[7];
+
+        index = 0;
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 1; j++) {
+                playerWalkRightFrames[index++] = tmpFrames[j][i];
+            }
+        }
+
+
+        playerWalkLeft = new Animation(1f/12f, playerWalkLeftFrames);
+        playerWalkRight = new Animation(1f/12f, playerWalkRightFrames);
+
+        playerIdleLeft = new Texture("core\\assets\\DemoRoom3\\playerIdleLeft.png");
+        playerIdleRight = new Texture("core\\assets\\DemoRoom3\\playerIdleRight.png");
+        playerJumpLeft = new Texture("core\\assets\\DemoRoom3\\playerJumpLeft.png");
+        playerJumpRight = new Texture("core\\assets\\DemoRoom3\\playerJumpRight.png");
+
+        this.player = new PlayerAnimWalk(playerIdleLeft, playerIdleRight, playerJumpLeft, playerJumpRight, playerWalkLeft, playerWalkRight);
     }
 
     private void initializeDino() {
@@ -82,6 +139,8 @@ public class DemoRoom3 implements Screen {
      *******************************************************************************/
     @Override
     public void render(float delta) {
+        elapsedTime += Gdx.graphics.getDeltaTime(); //gets time between frames
+
         float cameraX = camera.position.x - camera.viewportWidth / 2;
         float cameraY = camera.position.y - camera.viewportHeight / 2;
 
@@ -108,13 +167,15 @@ public class DemoRoom3 implements Screen {
         game.font.draw(game.batch, dialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
 
 
-        game.batch.draw(player.getTexture(), player.getXPos(), player.getYPos());
+        game.batch.draw(player.getTexture(elapsedTime), player.getXPos(), player.getYPos());
 
         game.font.draw(game.batch, player.getPlayer_health() + "", player.getXPos() + 47, player.getYPos() + 135);
 
         game.batch.end();
         //End Drawing
 
+        Direction playerDirection = InputHandler.getPlayerMovementDirection();
+        this.player.move(playerDirection);
 
         if (InputHandler.detachCameraToggle()) {
             this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
@@ -123,9 +184,6 @@ public class DemoRoom3 implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             dialogue = dino.getDialogue();
         }
-
-        Direction playerDirection = InputHandler.getPlayerMovementDirection();
-        this.player.move(playerDirection);
 
         if (cameraAttachedToPlayer) {
             CameraController.centerOn(player.getXPos(), player.getYPos(), camera);
@@ -144,6 +202,7 @@ public class DemoRoom3 implements Screen {
         //renderer.end();
 
     }
+
 
     private void calculateTraits() {
         dino.setTraitValue("PLAYER_DISTANCE_FROM_EDGE", (((player.getXPos() - npc.getXPos() - 200) / ((world_east_edge - npc.getXPos() - 200))) * 100));

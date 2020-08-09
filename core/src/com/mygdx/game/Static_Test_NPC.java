@@ -18,7 +18,7 @@ public class Static_Test_NPC {
     private static final String PLAYER_DOWN_NAME = "player_down";
 
     public Static_Test_NPC(TextureAtlas atlas) {
-        this.texture = new Texture("core\\assets\\Fairy.png");
+        this.texture = new Texture("core\\assets\\DemoRoom3\\npc.png");
 
         this.direction = Direction.DOWN;
         this.xPos = 600;
