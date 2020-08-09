@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,8 +36,11 @@ public class DemoRoom3 implements Screen {
     Dino dino;
     Dino dino2;
 
-    String dialogueNPC1 = "";
+    String dialogueNPC = "";
     String prevDialogue = "";
+
+    private int NPC1interactions;
+    private int NPC2interactions;
 
     private PlayerAnimWalk player;
 
@@ -200,11 +202,11 @@ public class DemoRoom3 implements Screen {
             this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
         }
 
-//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-        dialogueNPC1 = dino.getDialogue();
-        dialogueNPC1 = dino2.getDialogue();
-
-//        }
+        if (npcWithFocus == 1) {
+            dialogueNPC = dino.getDialogue();
+        } else {
+            dialogueNPC = dino2.getDialogue();
+        }
 
         if (cameraAttachedToPlayer) {
             CameraController.centerOn(player.getXPos(), player.getYPos(), camera);
@@ -251,7 +253,7 @@ public class DemoRoom3 implements Screen {
 
     private void drawDialogue(float currentTime) {
         calculateNPCDistance();
-        String tempDialogue = dialogueNPC1;
+        String tempDialogue = dialogueNPC;
 
         if (npcWithFocus == 1) {
             this.npcSpeechBox = new SpeechBox(npc.getXPos() + 70, npc.getYPos() - 10);
@@ -284,7 +286,7 @@ public class DemoRoom3 implements Screen {
                     game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 2.9)), (npcSpeechBox.getYPos() + 36));
                     game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
                 } else {
-                    game.font.draw(game.batch, dialogueNPC1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC1.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                    game.font.draw(game.batch, dialogueNPC, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
                 }
             }
         }

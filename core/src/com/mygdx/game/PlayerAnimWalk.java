@@ -51,6 +51,15 @@ public class PlayerAnimWalk {
             this.direction = null;
             return;
         }
+        while (getXPos() <= 1050) {
+            this.xPos += PLAYER_SPEED;
+        }
+        while (getYPos() <= 600) {
+            this.yPos += PLAYER_SPEED;
+        }
+        while (getYPos() >= 1500) {
+            this.yPos -= PLAYER_SPEED;
+        }
 
         this.direction = direction;
 
@@ -136,8 +145,8 @@ public class PlayerAnimWalk {
         switch (direction) {
             case UP:
                 if (prevDir == LEFT || prevDir == DOWN_LEFT || prevDir == UP_LEFT) {
-                    prevTexture = new TextureRegion(playerIdleLeft);
-                    return new TextureRegion(playerIdleLeft);
+                    prevTexture = (TextureRegion) playerWalkLeft.getKeyFrame(elapsedTime, true);
+                    return (TextureRegion) playerWalkLeft.getKeyFrame(elapsedTime, true);
                 } else {
                     prevTexture = (TextureRegion) playerWalkRight.getKeyFrame(elapsedTime, true);
                     return (TextureRegion) playerWalkRight.getKeyFrame(elapsedTime, true);
