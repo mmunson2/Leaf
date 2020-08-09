@@ -31,6 +31,8 @@ public class Player
     private static final String PLAYER_DOWN_LEFT_NAME = "player_down_left";
     private static final String PLAYER_DOWN_RIGHT_NAME = "player_down_right";
 
+    private static double player_health;
+
     public Player(TextureAtlas atlas)
     {
         this.player_up = atlas.findRegion(PLAYER_UP_NAME);
@@ -45,6 +47,8 @@ public class Player
         this.direction = Direction.RIGHT;
         this.xPos = 250;
         this.yPos = 200;
+
+        player_health = 100;
     }
 
     public TextureRegion getTexture()
@@ -121,7 +125,13 @@ public class Player
         return this.yPos;
     }
 
+    public double getPlayer_health() { return player_health; }
 
+    public void setPlayer_health(double newHealth) { player_health = newHealth; };
+
+    public void addPlayer_health(double addedHealth ) { player_health += addedHealth; }
+
+    public void subtractPlayer_health(double damage) { player_health -= damage; }
 
 
 
