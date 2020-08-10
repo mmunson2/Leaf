@@ -6,4 +6,4 @@ Conversation
 
 Static Variables: 1
 PLAYER_NAME 
-\L[Conversation] \S[PLAYER_NAME] .
+\L[Conversation] \S[PLAYER_NAME].

@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 public class Static_Test_NPC {
-    public static final int PLAYER_SPEED = 5;
-
     private float xPos;
     private float yPos;
 
@@ -15,7 +13,7 @@ public class Static_Test_NPC {
 
     private final Texture texture;
 
-    private static final String PLAYER_DOWN_NAME = "player_down";
+    private static final String name = "Eustace";
 
     public Static_Test_NPC(TextureAtlas atlas) {
         this.texture = new Texture("core\\assets\\DemoRoom3\\npc.png");
@@ -37,5 +35,5 @@ public class Static_Test_NPC {
         return this.yPos;
     }
 
-
+    public String getName() { return this.name; }
 }

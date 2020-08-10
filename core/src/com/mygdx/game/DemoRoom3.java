@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,10 +39,13 @@ public class DemoRoom3 implements Screen {
     Dino dino2;
 
     String dialogueNPC = "";
+    String dialogueNPC2 = "";
     String prevDialogue = "";
 
-    private int NPC1interactions;
-    private int NPC2interactions;
+    private float NPC1_INTERACTION;
+    private float NPC2_INTERACTION;
+    private float TIME_SINCE_LAST_INTERACTION;
+
 
     private PlayerAnimWalk player;
 
@@ -70,11 +75,18 @@ public class DemoRoom3 implements Screen {
     private int npc1Distance;
     private int npc2Distance;
 
+    private Music music;
+
 
     /********************************************************************************
      * Constructor
      *******************************************************************************/
     public DemoRoom3(final Leaf_Base game) {
+        music = Gdx.audio.newMusic(Gdx.files.internal("core\\assets\\DemoRoom3\\Travel Music Loop.mp3"));
+        music.setLooping(true);
+        music.setVolume(.02f);
+        music.play();
+
         this.game = game;
 
         this.random = new Random();
@@ -98,12 +110,16 @@ public class DemoRoom3 implements Screen {
         renderer = new ShapeRenderer();
         initializeDino();
         initializeTraits();
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
     }
 
     private void initializeTraits() {
-        traits = new String[2];
+        traits = new String[5];
         traits[0] = "PLAYER_HEALTH";
         traits[1] = "PLAYER_DISTANCE_FROM_EDGE";
+        traits[2] = "NPC1_INTERACTION";
+        traits[3] = "NPC2_INTERACTION";
+        traits[4] = "TIME_SINCE_LAST_INTERACTION";
     }
 
     private void createPlayer() {
@@ -149,9 +165,10 @@ public class DemoRoom3 implements Screen {
 
     private void initializeDino() {
         dino = new Dino("core\\assets\\Dialogue\\PlayerHealthDialogue.dino");
-        dino2 = new Dino("core\\assets\\Dialogue\\PlayerHealthDialogue.dino");
-
+        dino2 = new Dino("core\\assets\\Dialogue\\ELDERLYDATINGSIM_NO_APOS.dino");
         dino.setStaticVariable("PLAYER_NAME", "Melvin");
+        dialogueNPC = dino.getDialogue();
+        dialogueNPC2 = dino2.getDialogue();
     }
 
     /********************************************************************************
@@ -184,7 +201,10 @@ public class DemoRoom3 implements Screen {
         game.batch.draw(background, 0, 0, 2512, 2096);
 
         game.batch.draw(npc.getTexture(), npc.getXPos(), npc.getYPos());
+        game.font.draw(game.batch, npc2.getName(), npc.getXPos() + 10, npc.getYPos() - 4);
+
         game.batch.draw(npc2.getTexture(), npc2.getXPos(), npc2.getYPos());
+        game.font.draw(game.batch, npc.getName(), npc2.getXPos() + 10, npc2.getYPos() - 4);
 
         drawDialogue(delta);
 
@@ -202,10 +222,17 @@ public class DemoRoom3 implements Screen {
             this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
         }
 
-        if (npcWithFocus == 1) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (npcWithFocus == 1 && NPC1_INTERACTION < 100) {
+                NPC1_INTERACTION += 1;
+                System.out.println("npc1 interaction: " + NPC1_INTERACTION);
+            }
+            if (npcWithFocus == 2 && NPC2_INTERACTION < 100) {
+                NPC2_INTERACTION += 1;
+                System.out.println("npc2 interaction: " + NPC2_INTERACTION);
+            }
             dialogueNPC = dino.getDialogue();
-        } else {
-            dialogueNPC = dino2.getDialogue();
+            dialogueNPC2 = dino2.getDialogue();
         }
 
         if (cameraAttachedToPlayer) {
@@ -253,12 +280,15 @@ public class DemoRoom3 implements Screen {
 
     private void drawDialogue(float currentTime) {
         calculateNPCDistance();
-        String tempDialogue = dialogueNPC;
+        String tempDialogue = "";
 
         if (npcWithFocus == 1) {
             this.npcSpeechBox = new SpeechBox(npc.getXPos() + 70, npc.getYPos() - 10);
+            tempDialogue = dialogueNPC;
+
         } else {
             this.npcSpeechBox = new SpeechBox(npc2.getXPos() + 70, npc2.getYPos() - 10);
+            tempDialogue = dialogueNPC2;
         }
 
         if (npc1Distance < 300 || player.getXPos() - npc.getXPos() > 0 || npc2Distance < 300) {
@@ -267,7 +297,7 @@ public class DemoRoom3 implements Screen {
 
                 prevDialogue = tempDialogue;
 
-                if (tempDialogue.length() > 33) {
+                if (tempDialogue.length() > 32) {
 
 
                     double middle = Math.floor(tempDialogue.length() / 2);
@@ -286,7 +316,7 @@ public class DemoRoom3 implements Screen {
                     game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 2.9)), (npcSpeechBox.getYPos() + 36));
                     game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
                 } else {
-                    game.font.draw(game.batch, dialogueNPC, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                    game.font.draw(game.batch, tempDialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
                 }
             }
         }
@@ -294,12 +324,17 @@ public class DemoRoom3 implements Screen {
 
 
     private void calculateTraits() {
-
+        // set health and distance from edge
         dino.setTraitValue(traits[1], (((player.getXPos() - npc.getXPos() - 200) / ((world_east_edge - npc.getXPos() - 200))) * 100));
         if (player_off_edge) {
             dino.setTraitValue(traits[1], 100);
         }
+        dino.setTraitValue(traits[0], player.getPlayer_health());
 
+        dino2.setTraitValue(traits[0], player.getPlayer_health());
+        dino2.setTraitValue(traits[2], NPC1_INTERACTION);
+        dino2.setTraitValue(traits[3], NPC2_INTERACTION);
+        dino2.setTraitValue(traits[4], TIME_SINCE_LAST_INTERACTION);
     }
 
     private void calculatePlayerHealth() {
@@ -344,6 +379,10 @@ public class DemoRoom3 implements Screen {
 
     public void hide() {
 
+    }
+
+    enum TRAITS {
+        PLAYER_HEALTH, PLAYER_DISTANCE_FROM_EDGE, NPC1_INTERACTION, NPC2_INTERACTION, TIME_SINCE_LAST_INTERACTION
     }
 
 }
