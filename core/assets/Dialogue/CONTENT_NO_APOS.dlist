@@ -39,8 +39,8 @@ Size: 21
 18: You should really be more careful.
 0.0 NPC2_INTERACTION:0.0:50.0:0.0 HEALTH_LEVEL:0.0:50.0:80.0
 19: Let me know if I can help.
-0.0 HEALTH_LEVEL:0.0:50.0:80.0
+0.0 PLAYER_HEALTH:0.0:50.0:100.0
 20: We must get you assistance!
-0.0 HEALTH_LEVEL:0.0:50.0:80.0
+0.0 PLAYER_HEALTH:0.0:50.0:100.0
 21: I TOLD Barnaby to guard the edge better, that idiot!
-0.0 HEALTH_LEVEL:0.0:50.0:80.0
+0.0 HEALTH_LEVEL:0.0:50.0:100.0

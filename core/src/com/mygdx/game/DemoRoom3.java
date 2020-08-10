@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Dino.Dino;
+import org.lwjgl.Sys;
 
 import java.util.Random;
 
@@ -97,7 +98,7 @@ public class DemoRoom3 implements Screen {
 
         background = new TextureRegion(new Texture("core\\assets\\DemoRoom3\\background.png"));
 
-        world_east_edge = background.getRegionWidth();
+        world_east_edge = background.getRegionWidth() - 50;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
@@ -110,7 +111,7 @@ public class DemoRoom3 implements Screen {
         renderer = new ShapeRenderer();
         initializeDino();
         initializeTraits();
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
     }
 
     private void initializeTraits() {
@@ -223,14 +224,17 @@ public class DemoRoom3 implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (npcWithFocus == 1 && NPC1_INTERACTION < 100) {
-                NPC1_INTERACTION += 1;
-                System.out.println("npc1 interaction: " + NPC1_INTERACTION);
+            if (npcWithFocus == 1) {
+                if (TIME_SINCE_LAST_INTERACTION <= 96) TIME_SINCE_LAST_INTERACTION += 5;
+                if (NPC1_INTERACTION< 96) NPC1_INTERACTION += 5;
             }
-            if (npcWithFocus == 2 && NPC2_INTERACTION < 100) {
-                NPC2_INTERACTION += 1;
-                System.out.println("npc2 interaction: " + NPC2_INTERACTION);
+            else if (npcWithFocus == 2 && NPC2_INTERACTION < 96) {
+                NPC2_INTERACTION += 5;
+                TIME_SINCE_LAST_INTERACTION = 0;
+
             }
+            System.out.println(TIME_SINCE_LAST_INTERACTION);
+
             dialogueNPC = dino.getDialogue();
             dialogueNPC2 = dino2.getDialogue();
         }
@@ -291,7 +295,7 @@ public class DemoRoom3 implements Screen {
             tempDialogue = dialogueNPC2;
         }
 
-        if (npc1Distance < 300 || player.getXPos() - npc.getXPos() > 0 || npc2Distance < 300) {
+        if (npc1Distance < 230 || player.getXPos() - npc.getXPos() > 0 || npc2Distance < 230) {
             if (tempDialogue.length() > 0) {
                 game.batch.draw(npcSpeechBox.getTexture(), npcSpeechBox.getXPos(), npcSpeechBox.getYPos());
 
@@ -313,10 +317,10 @@ public class DemoRoom3 implements Screen {
                     String dialogue1 = tempDialogue.substring(0, (int) middle);
                     String dialogue2 = tempDialogue.substring((int) middle + 1);
 
-                    game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 2.9)), (npcSpeechBox.getYPos() + 36));
-                    game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                    game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 3.1)), (npcSpeechBox.getYPos() + 36));
+                    game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 3.1)), (npcSpeechBox.getYPos() + 20));
                 } else {
-                    game.font.draw(game.batch, tempDialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 2.9)), (npcSpeechBox.getYPos() + 20));
+                    game.font.draw(game.batch, tempDialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 3.1)), (npcSpeechBox.getYPos() + 20));
                 }
             }
         }
