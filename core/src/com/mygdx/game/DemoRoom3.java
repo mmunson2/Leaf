@@ -203,6 +203,7 @@ public class DemoRoom3 implements Screen {
 
         game.batch.draw(npc.getTexture(), npc.getXPos(), npc.getYPos());
         game.font.draw(game.batch, npc2.getName(), npc.getXPos() + 10, npc.getYPos() - 4);
+        game.font.draw(game.batch, "Affection: " + NPC1_INTERACTION, npc.getXPos()- 7, npc.getYPos() - 19);
 
 
         game.batch.draw(npc2.getTexture(), npc2.getXPos(), npc2.getYPos());
