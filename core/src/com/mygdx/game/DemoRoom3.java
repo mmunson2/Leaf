@@ -204,8 +204,11 @@ public class DemoRoom3 implements Screen {
         game.batch.draw(npc.getTexture(), npc.getXPos(), npc.getYPos());
         game.font.draw(game.batch, npc2.getName(), npc.getXPos() + 10, npc.getYPos() - 4);
 
+
         game.batch.draw(npc2.getTexture(), npc2.getXPos(), npc2.getYPos());
         game.font.draw(game.batch, npc.getName(), npc2.getXPos() + 10, npc2.getYPos() - 4);
+        game.font.draw(game.batch, "Affection: " + NPC2_INTERACTION, npc2.getXPos()- 7, npc2.getYPos() - 19);
+
 
         drawDialogue(delta);
 
@@ -227,11 +230,11 @@ public class DemoRoom3 implements Screen {
             if (npcWithFocus == 1) {
                 if (TIME_SINCE_LAST_INTERACTION <= 96) TIME_SINCE_LAST_INTERACTION += 5;
                 if (NPC1_INTERACTION< 96) NPC1_INTERACTION += 5;
+                if (NPC2_INTERACTION > 50) NPC2_INTERACTION -= 3;
             }
             else if (npcWithFocus == 2 && NPC2_INTERACTION < 96) {
                 NPC2_INTERACTION += 5;
-                TIME_SINCE_LAST_INTERACTION = 0;
-
+                if (TIME_SINCE_LAST_INTERACTION >= 10 ) TIME_SINCE_LAST_INTERACTION -= 10;
             }
             System.out.println(TIME_SINCE_LAST_INTERACTION);
 
@@ -279,7 +282,9 @@ public class DemoRoom3 implements Screen {
 
 
     private void drawPlayerHealth() {
-        game.font.draw(game.batch, (int) player.getPlayer_health() + "HP", player.getXPos() + 29, player.getYPos() - 10);
+        game.font.draw(game.batch, (int) player.getPlayer_health() + "HP", player.getXPos() + 29, player.getYPos() + 105);
+        game.font.draw(game.batch, "Melvin", player.getXPos() + 29, player.getYPos() - 5);
+
     }
 
     private void drawDialogue(float currentTime) {
@@ -320,7 +325,7 @@ public class DemoRoom3 implements Screen {
                     game.font.draw(game.batch, dialogue1, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue1.length() * 3.1)), (npcSpeechBox.getYPos() + 36));
                     game.font.draw(game.batch, dialogue2, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogue2.length() * 3.1)), (npcSpeechBox.getYPos() + 20));
                 } else {
-                    game.font.draw(game.batch, tempDialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 3.1)), (npcSpeechBox.getYPos() + 20));
+                    game.font.draw(game.batch, tempDialogue, (float) (npcSpeechBox.getXPos() + npcSpeechBox.getWidth() / 2 - (dialogueNPC.length() * 2.8)), (npcSpeechBox.getYPos() + 28));
                 }
             }
         }

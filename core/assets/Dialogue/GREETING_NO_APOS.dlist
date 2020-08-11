@@ -16,12 +16,12 @@ Size: 14
 7: Good morning, my friend.
 0.0 NPC2_INTERACTION:50.0:70.0:50.0
 8: Ah, a wonderful day to you!
-0.0 NPC2_INTERACTION:50.0:70.0:70.0
+0.0 NPC2_INTERACTION:50.0:100.0:70.0
 9: Hows my favorite adventurer?
-0.0 NPC2_INTERACTION:70.0:90.0:80.0
+0.0 NPC2_INTERACTION:70.0:100.0:99.0
 10: hey beb.
-0.0 NPC2_INTERACTION:90.0:100.0:50.0
-11: I was hoping Id see you soon.
+0.0 NPC2_INTERACTION:90.0:100.0:1.0
+11: Finally stopping by?
 0.0 TIME_SINCE_LAST_INTERACTION:75.0:100.0:25.0
 12: Its been a while.
 0.0 TIME_SINCE_LAST_INTERACTION:75.0:100.0:25.0 

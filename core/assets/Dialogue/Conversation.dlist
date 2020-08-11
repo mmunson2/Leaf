@@ -1,13 +1,21 @@
 # Generated: 2020/08/08 19:13:20
 Name: Conversation
-Size: 5
+Size: 9
 1: Nice to see you walking about,
 1.0 
 2: Only thing that way is the end of the world! Haha, careful,
-0.0 PLAYER_DISTANCE_FROM_EDGE:0.0:34.0:100.0
+0.0 PLAYER_DISTANCE_FROM_EDGE:0.0:34.0:80.0
 3: Woah there, you're getting awfully close to that edge,
-0.0 PLAYER_DISTANCE_FROM_EDGE:34.0:67.0:100.0
+0.0 PLAYER_DISTANCE_FROM_EDGE:34.0:67.0:70.0
 4: It's too dangerous! Get back here right now,
-0.0 PLAYER_DISTANCE_FROM_EDGE:67.0:100.0:100.0
+0.0 PLAYER_DISTANCE_FROM_EDGE:67.0:100.0:80.0
 5: ...rest in peace,
 0.0 PLAYER_HEALTH:0.0:0.0:100.0
+6: Hello again,
+1.0 
+7: Have a nice day,
+1.0 
+8: Good morning,
+1.0 
+9: May the force be with you,
+.1
