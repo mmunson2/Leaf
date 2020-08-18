@@ -4,154 +4,122 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-ChinookOnRight
+NPC_down
   rotate: false
-  xy: 548, 328
-  size: 300, 96
-  orig: 300, 96
+  xy: 1004, 975
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
-ChinookRight
+NPC_down_left
   rotate: false
-  xy: 548, 230
-  size: 300, 96
-  orig: 300, 96
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
-Crash
+NPC_down_right
   rotate: false
-  xy: 548, 132
-  size: 300, 96
-  orig: 300, 96
+  xy: 392, 410
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+NPC_left
+  rotate: false
+  xy: 262, 150
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+NPC_right
+  rotate: false
+  xy: 1004, 957
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+NPC_up
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+NPC_up_left
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+NPC_up_right
+  rotate: false
+  xy: 392, 392
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 battleback10
   rotate: false
-  xy: 2, 426
+  xy: 2, 428
   size: 1000, 563
   orig: 1000, 563
   offset: 0, 0
   index: -1
-mountains
-  rotate: false
-  xy: 2, 165
-  size: 544, 259
-  orig: 544, 259
-  offset: 0, 0
-  index: -1
 player_down
   rotate: false
-  xy: 850, 296
+  xy: 2, 298
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_down_left
   rotate: false
-  xy: 850, 166
+  xy: 2, 168
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_down_right
   rotate: false
-  xy: 548, 2
+  xy: 132, 298
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_left
   rotate: false
-  xy: 678, 2
+  xy: 2, 38
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_right
   rotate: false
-  xy: 808, 2
+  xy: 132, 168
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-trees1
-  rotate: false
-  xy: 2, 3
-  size: 544, 160
-  orig: 544, 160
-  offset: 0, 0
-  index: -1
-
-Atlas2.png
-size: 1024,1024
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Ground
-  rotate: false
-  xy: 2, 294
-  size: 800, 600
-  orig: 800, 600
-  offset: 0, 0
-  index: -1
-Skyscraper
-  rotate: false
-  xy: 804, 94
-  size: 200, 800
-  orig: 200, 800
-  offset: 0, 0
-  index: -1
 player_up
   rotate: false
-  xy: 2, 2
+  xy: 262, 298
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_up_left
   rotate: false
-  xy: 548, 164
+  xy: 132, 38
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_up_right
   rotate: false
-  xy: 132, 2
+  xy: 262, 168
   size: 128, 128
   orig: 128, 128
-  offset: 0, 0
-  index: -1
-trees2
-  rotate: false
-  xy: 2, 132
-  size: 544, 160
-  orig: 544, 160
-  offset: 0, 0
-  index: -1
-
-Atlas3.png
-size: 1024,1024
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-mountain
-  rotate: false
-  xy: 2, 2
-  size: 800, 600
-  orig: 800, 600
-  offset: 0, 0
-  index: -1
-
-Atlas4.png
-size: 1024,1024
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-sky
-  rotate: false
-  xy: 2, 2
-  size: 800, 600
-  orig: 800, 600
   offset: 0, 0
   index: -1

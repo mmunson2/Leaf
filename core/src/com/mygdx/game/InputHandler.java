@@ -13,6 +13,8 @@ public class InputHandler
 
     public static final int DETACH_CAMERA = Input.Keys.C;
 
+    public static final int TALK_TO_NPC = Input.Keys.SPACE;
+
     public static final int MOVE_CAMERA_UP = Input.Keys.W;
     public static final int MOVE_CAMERA_DOWN = Input.Keys.S;
     public static final int MOVE_CAMERA_LEFT = Input.Keys.A;
@@ -64,6 +66,12 @@ public class InputHandler
         return Gdx.input.isKeyJustPressed(DETACH_CAMERA);
     }
 
+    public static boolean talkToNPC()
+    {
+        return Gdx.input.isKeyJustPressed(TALK_TO_NPC);
+    }
+
+
     public static Direction getCameraMovementDirection()
     {
         if(Gdx.input.isKeyPressed(MOVE_CAMERA_UP) && Gdx.input.isKeyPressed(MOVE_CAMERA_LEFT))
@@ -89,7 +97,6 @@ public class InputHandler
         }
         if(Gdx.input.isKeyPressed(MOVE_CAMERA_DOWN))
         {
-            System.out.println("Down detected");
             return Direction.DOWN;
         }
         if(Gdx.input.isKeyPressed(MOVE_CAMERA_LEFT))

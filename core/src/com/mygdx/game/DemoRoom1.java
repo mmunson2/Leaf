@@ -38,6 +38,7 @@ public class DemoRoom1 implements Screen
     String dialogue = "";
 
     private Player player;
+    private NPC npc;
 
     /********************************************************************************
      * Constructor
@@ -49,6 +50,7 @@ public class DemoRoom1 implements Screen
         this.random = new Random();
 
         this.player = new Player(game.atlas);
+        this.npc = new NPC(game.atlas);
 
         background = game.atlas.findRegion("battleback10");
 
@@ -84,6 +86,8 @@ public class DemoRoom1 implements Screen
         game.batch.begin();
         game.batch.draw(background, 0,0, 1200, 700);
 
+
+        game.batch.draw(npc.getTexture(), npc.getXPos(), npc.getYPos(), 128, 128);
         game.batch.draw(player.getTexture(), player.getXPos(), player.getYPos());
 
         game.font.draw(game.batch, dialogue, cameraX + 100,cameraY + 80);
@@ -91,15 +95,33 @@ public class DemoRoom1 implements Screen
         game.batch.end();
         //End Drawing
 
+////////////////////////////////////////////////////////////////////////////////
+        /// This is where the game logic is for now
 
         if(InputHandler.detachCameraToggle())
         {
             this.cameraAttachedToPlayer = !this.cameraAttachedToPlayer;
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        if(InputHandler.talkToNPC())
         {
-            dialogue = dino.getDialogue();
+            float xDelta = this.player.getXPos() - this.npc.getXPos();
+            float yDelta = this.player.getYPos() - this.npc.getYPos();
+
+            //Check if we're close enough to talk
+            if(Math.abs(xDelta) < 200 && Math.abs(yDelta) < 200)
+            {
+
+                this.npc.faceTowards(player.getXPos(), player.getYPos());
+                this.player.faceTowards(npc.getXPos(), npc.getYPos());
+
+                //this.npc.setMovementLocked(true);
+                //this.player.setMovementLocked(true);
+
+                dialogue = dino.getDialogue();
+            }
+
+
         }
 
         Direction playerDirection = InputHandler.getPlayerMovementDirection();
@@ -114,6 +136,8 @@ public class DemoRoom1 implements Screen
             Direction cameraDirection = InputHandler.getCameraMovementDirection();
             CameraController.move(cameraDirection, camera);
         }
+
+        this.npc.aiMove();
 
 
         //Demonstrating how to quickly draw shapes

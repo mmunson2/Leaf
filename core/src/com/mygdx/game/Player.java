@@ -31,6 +31,15 @@ public class Player
     private static final String PLAYER_DOWN_LEFT_NAME = "player_down_left";
     private static final String PLAYER_DOWN_RIGHT_NAME = "player_down_right";
 
+    private static final float TOP_BOUND = 400;
+    private static final float BOTTOM_BOUND = 50;
+    private static final float LEFT_BOUND = 0;
+    private static final float RIGHT_BOUND = 1100;
+
+    private static final float DIRECTION_MARGIN = 10;
+
+    private boolean movementLocked = false;
+
     public Player(TextureAtlas atlas)
     {
         this.player_up = atlas.findRegion(PLAYER_UP_NAME);
@@ -66,7 +75,7 @@ public class Player
 
     public void move(Direction direction)
     {
-        if(direction == null)
+        if(direction == null || this.movementLocked)
         {
             return;
         }
@@ -103,12 +112,57 @@ public class Player
                 this.yPos -= PLAYER_SPEED;
                 this.xPos += PLAYER_SPEED;
         }
+
+        checkBounds();
     }
 
-
-    public void update()
+    public void faceTowards(float xPos, float yPos)
     {
+        float xDelta = this.xPos - xPos;
+        float yDelta = this.yPos - yPos;
 
+        if(Math.abs(xDelta) < DIRECTION_MARGIN)
+        {
+            xDelta = 0;
+        }
+        if(Math.abs(yDelta) < DIRECTION_MARGIN)
+        {
+            yDelta = 0;
+        }
+
+        if(yDelta > 0 && xDelta == 0) //Above the target
+        {
+            this.direction = Direction.DOWN;
+        }
+        else if(yDelta < 0 && xDelta == 0) //Below the target
+        {
+            this.direction = Direction.UP;
+        }
+        else if(xDelta > 0 && yDelta == 0)  //Right of the target
+        {
+            this.direction = Direction.LEFT;
+        }
+        else if(xDelta < 0 && yDelta == 0) //Left of the target
+        {
+            this.direction = Direction.RIGHT;
+        }
+
+        if(yDelta > 0 && xDelta > 0) //Up and right of target
+        {
+            this.direction = Direction.DOWN_LEFT;
+        }
+        else if(yDelta > 0 && xDelta < 0) //Up and left of target
+        {
+            this.direction = Direction.DOWN_RIGHT;
+        }
+        else if(yDelta < 0 && xDelta > 0) //Down and right of target
+        {
+            this.direction = Direction.UP_LEFT;
+        }
+        else if(yDelta < 0 && xDelta < 0) //Down and left of target
+        {
+            this.direction = Direction.UP_RIGHT;
+        }
     }
 
     public float getXPos()
@@ -119,6 +173,31 @@ public class Player
     public float getYPos()
     {
         return this.yPos;
+    }
+
+    public void setMovementLocked(boolean lock)
+    {
+        this.movementLocked = lock;
+    }
+
+    private void checkBounds()
+    {
+        if(this.yPos > TOP_BOUND)
+        {
+            this.yPos = TOP_BOUND;
+        }
+        if(this.yPos < BOTTOM_BOUND)
+        {
+            this.yPos = BOTTOM_BOUND;
+        }
+        if(this.xPos < LEFT_BOUND)
+        {
+            this.xPos = LEFT_BOUND;
+        }
+        if(this.xPos > RIGHT_BOUND)
+        {
+            this.xPos = RIGHT_BOUND;
+        }
     }
 
 
