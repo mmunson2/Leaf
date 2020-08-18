@@ -61,6 +61,7 @@ public class ListParser
             String entryNumber = stringScan.next(); //Ignore the entry number
             String entryName = stringScan.nextLine();
             entryName = entryName.substring(1);
+            System.err.println(name);
 
             String dataEntry = Parser.getNextLine(fileScanner);
             stringScan = new Scanner(dataEntry);

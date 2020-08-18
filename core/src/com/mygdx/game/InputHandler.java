@@ -46,7 +46,6 @@ public class InputHandler
         }
         if(Gdx.input.isKeyPressed(MOVE_PLAYER_DOWN))
         {
-            System.out.println("Down detected");
             return Direction.DOWN;
         }
         if(Gdx.input.isKeyPressed(MOVE_PLAYER_LEFT))

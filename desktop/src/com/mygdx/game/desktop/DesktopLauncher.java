@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "HeliRescueTest";
-		config.width = 800;
-		config.height = 600;
+		config.width = 1600;
+		config.height = 1200;
 		new LwjglApplication(new Leaf_Base(), config);
 	}
 }

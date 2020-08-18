@@ -98,7 +98,7 @@ public class DemoRoom2 implements Screen
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
-            dialogue = dino.getDialogue();
+//            dialogue = dino.getDialogue();
         }
 
         Direction playerDirection = InputHandler.getPlayerMovementDirection();
