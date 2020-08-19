@@ -62,7 +62,7 @@ public class DemoRoom1 implements Screen
 
         renderer = new ShapeRenderer();
 
-        dino = new Dino("Dialogue/Go Away.dino");
+        dino = new Dino("Dialogue/Ghost/Unfriendly_Ghost.dino");
     }
 
     /********************************************************************************

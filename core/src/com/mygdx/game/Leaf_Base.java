@@ -27,8 +27,8 @@ public class Leaf_Base extends Game
         Gdx.gl.glClearColor(1, 1, 1, 1);
         batch = new SpriteBatch();
         font = new BitmapFont();
-//        atlas = new TextureAtlas("atlas.atlas");
-        this.setScreen(new DemoRoom3(this));
+        atlas = new TextureAtlas("atlas.atlas");
+        this.setScreen(new DemoRoom1(this));
     }
 
     /********************************************************************************

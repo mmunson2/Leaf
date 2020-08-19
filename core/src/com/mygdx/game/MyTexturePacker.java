@@ -6,6 +6,6 @@ public class MyTexturePacker
 {
     public static void main(String[] args) throws Exception
     {
-        TexturePacker.process("core/assets", "core/assets","Atlas");
+        TexturePacker.process("core/assets/TextureAtlasFiles", "core/assets","Atlas");
     }
 }
