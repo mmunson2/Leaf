@@ -1,31 +1,42 @@
-# Generated: 2020/08/08 19:13:20
-Name: GREETING
-Size: 14
-1: Hello there.
-0.5 NPC2_INTERACTION:0.0:10.0:25.0
-2: Welcome to our town.
-0.0 NPC2_INTERACTION:0.0:10.0:25.0
-3: Oh, hello.
-0.5 NPC2_INTERACTION:70.0:100.0:0.0 NPC1_INTERACTION:60.0:100.0:80.0  
-4: Good to see you.
-0.0 NPC2_INTERACTION:20.0:40.0:40.0
-5: Hi there!
-0.0 NPC2_INTERACTION:30.0:50.0:45.0
-6: Salut!
-0.0 NPC2_INTERACTION:40.0:60.0:50.0
-7: Good morning, my friend.
-0.0 NPC2_INTERACTION:50.0:70.0:50.0
-8: Ah, a wonderful day to you!
-0.0 NPC2_INTERACTION:50.0:70.0:70.0
-9: How's my favorite adventurer?
-0.0 NPC2_INTERACTION:70.0:90.0:80.0
-10: hey beb.
-0.0 NPC2_INTERACTION:90.0:100.0:50.0
-11: I was hoping I’d see you soon.
-0.0 NPC2_INTERACTION:90.0:100.0:25.0 TIME_SINCE_LAST_INTERACTION:75.0:100.0:25.0
-12: It’s been a while.
-0.0 NPC2_INTERACTION:90.0:100.0:25.0 TIME_SINCE_LAST_INTERACTION:75.0:100.0:25.0 NPC1_INTERACTION:60.0:100.0:80.0 
-13: You look hurt.
-0.0 NPC2_INTERACTION:0.0:50.0:00.0 HEALTH_LEVEL:0.0:50.0:100.0
-14: Oh, no! You’re injured!
-0.0 NPC1_INTERACTION:50.0:100.0:00.0 HEALTH_LEVEL:0.0:50.0:100.0
+# Generated: 2020/08/17 11:17:34
+Name: Greeting
+Size: 13
+1: Neutral1
+Hello, there.
+0.0 NPC2_INTERACTION:0.0:25.0:1.0 
+2: Neutral2
+Welcome to our town.
+0.0 NPC2_INTERACTION:0.0:25.0:1.0 
+3: NeutralPos1
+Oh, hello.
+0.0 NPC2_INTERACTION:20.0:40.0:1.0 
+4: NeutralPos2
+Good to see you.
+0.0 NPC2_INTERACTION:30.0:50.0:1.0 
+5: NeutralPos3
+Hi there!
+0.0 NPC2_INTERACTION:40.0:70.0:1.0 
+6: Pos1
+Salut!
+0.0 NPC2_INTERACTION:50.0:100.0:1.0 
+7: Pos2
+Good morning, my friend.
+0.0 NPC2_INTERACTION:60.0:100.0:1.0 
+8: Pos3
+A wonderful day to you!
+0.0 NPC2_INTERACTION:75.0:100.0:1.0 
+9: Pos4
+How is my favorite adventurer?
+0.0 NPC2_INTERACTION:80.0:100.0:1.0 
+10: Jealous1
+Finally stopping by, huh?
+0.0 NPC2_INTERACTION:50.0:100.0:1.0 TIME_SINCE_LAST_INTERACTION:30.0:100.0:1.0 NPC1_INTERACTION:20.0:100.0:1.0
+11: Jealous2
+It has been a while.
+0.0 NPC2_INTERACTION:50.0:100.0:1.0 TIME_SINCE_LAST_INTERACTION:30.0:80.0:1.0 NPC1_INTERACTION:20.0:100.0:1.0
+12: Concern1
+You seem injured.
+0.0 PLAYER_HEALTH:0.0:50.0:1.0 NPC2_INTERACTION:0.0:40.0:1.0 
+13: Concern2
+Oh no! You are hurt!
+0.0 PLAYER_HEALTH:0.0:50.0:1.0 NPC2_INTERACTION:30.0:100.0:1.0 

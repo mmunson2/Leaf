@@ -10,6 +10,7 @@ package com.mygdx.game.Dino.List;
  ******************************************************************************/
 public class ListEntry
 {
+    private String entryName;
     private String listEntry;
     private double baseProbability;
     private int[] traitMap;
@@ -81,6 +82,13 @@ public class ListEntry
             }
         }
     }
+
+
+    public void setEntryName(String entryName)
+    {
+        this.entryName = entryName;
+    }
+
 
     /***************************************************************************
      * setListEntry
@@ -180,7 +188,8 @@ public class ListEntry
             }
         }
 
-        if(count == 0)
+        //Modified 8/13, attempting to make AND gate
+        if(count != this.traits.length)
         {
             return this.baseProbability;
         }
@@ -201,6 +210,13 @@ public class ListEntry
     {
         return this.listEntry;
     }
+
+
+    public String getEntryName()
+    {
+        return this.entryName;
+    }
+
 
     public Trait[] getTraits()
     {
@@ -250,6 +266,8 @@ public class ListEntry
     {
         StringBuilder builder = new StringBuilder();
 
+        builder.append(this.entryName);
+        builder.append("\n");
         builder.append(this.listEntry);
         builder.append("\n");
         builder.append(baseProbability);

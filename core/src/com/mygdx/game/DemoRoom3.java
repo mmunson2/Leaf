@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Dino.Dino;
 import org.lwjgl.Sys;
 
+import java.io.File;
 import java.util.Random;
 
 
@@ -83,7 +84,7 @@ public class DemoRoom3 implements Screen {
      * Constructor
      *******************************************************************************/
     public DemoRoom3(final Leaf_Base game) {
-        music = Gdx.audio.newMusic(Gdx.files.internal("core\\assets\\DemoRoom3\\Travel Music Loop.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("DemoRoom3" + File.separator + "Travel Music Loop.mp3"));
         music.setLooping(true);
         music.setVolume(.02f);
         music.play();
@@ -96,7 +97,7 @@ public class DemoRoom3 implements Screen {
         this.npc2 = new Static_Test_NPC2();
 
 
-        background = new TextureRegion(new Texture("core\\assets\\DemoRoom3\\background.png"));
+        background = new TextureRegion(new Texture("DemoRoom3" + File.separator + "background.png"));
 
         world_east_edge = background.getRegionWidth() - 50;
 
@@ -128,7 +129,7 @@ public class DemoRoom3 implements Screen {
         // creating character
         int index = 0;
 
-        img = new Texture("core\\assets\\DemoRoom3\\playerLeft.png");
+        img = new Texture("DemoRoom3" + File.separator + "playerLeft.png");
         TextureRegion[][] tmpFrames = TextureRegion.split(img, 96, 96);
 
         playerWalkLeftFrames = new TextureRegion[7];
@@ -139,7 +140,7 @@ public class DemoRoom3 implements Screen {
             }
         }
 
-        img = new Texture("core\\assets\\DemoRoom3\\playerRight.png");
+        img = new Texture("DemoRoom3" + File.separator + "playerRight.png");
         tmpFrames = TextureRegion.split(img, 96, 96);
 
         playerWalkRightFrames = new TextureRegion[7];
@@ -156,17 +157,17 @@ public class DemoRoom3 implements Screen {
         playerWalkLeft = new Animation(1f / 12f, playerWalkLeftFrames);
         playerWalkRight = new Animation(1f / 12f, playerWalkRightFrames);
 
-        playerIdleLeft = new Texture("core\\assets\\DemoRoom3\\playerIdleLeft.png");
-        playerIdleRight = new Texture("core\\assets\\DemoRoom3\\playerIdleRight.png");
-        playerJumpLeft = new Texture("core\\assets\\DemoRoom3\\playerJumpLeft.png");
-        playerJumpRight = new Texture("core\\assets\\DemoRoom3\\playerJumpRight.png");
+        playerIdleLeft = new Texture("DemoRoom3" + File.separator + "playerIdleLeft.png");
+        playerIdleRight = new Texture("DemoRoom3" + File.separator + "playerIdleRight.png");
+        playerJumpLeft = new Texture("DemoRoom3" + File.separator + "playerJumpLeft.png");
+        playerJumpRight = new Texture("DemoRoom3" + File.separator + "playerJumpRight.png");
 
         this.player = new PlayerAnimWalk(playerIdleLeft, playerIdleRight, playerJumpLeft, playerJumpRight, playerWalkLeft, playerWalkRight);
     }
 
     private void initializeDino() {
-        dino = new Dino("core\\assets\\Dialogue\\PlayerHealthDialogue.dino");
-        dino2 = new Dino("core\\assets\\Dialogue\\ELDERLYDATINGSIM_NO_APOS.dino");
+        dino = new Dino("Dialogue" + File.separator + "PlayerHealthDialogue.dino");
+        dino2 = new Dino("Dialogue" + File.separator + "ELDERLY_DATING_SIM.dino");
         dino.setStaticVariable("PLAYER_NAME", "Melvin");
         dialogueNPC = dino.getDialogue();
         dialogueNPC2 = dino2.getDialogue();
@@ -307,7 +308,7 @@ public class DemoRoom3 implements Screen {
 
                 prevDialogue = tempDialogue;
 
-                if (tempDialogue.length() > 32) {
+                if (tempDialogue.length() > 30) {
 
 
                     double middle = Math.floor(tempDialogue.length() / 2);

@@ -1,5 +1,6 @@
 package com.mygdx.game.Dino;
 
+
 import com.mygdx.game.Dino.List.ListEntry;
 import com.mygdx.game.Dino.List.Trait;
 
@@ -56,14 +57,17 @@ public class ListParser
 
         for(int i = 0; i < list.length; i++)
         {
-            String listEntry = Parser.getNextLine(fileScanner);
-            stringScan = new Scanner(listEntry);
+            String entryName = Parser.getNextLine(fileScanner);
+
+            stringScan = new Scanner(entryName);
             String entryNumber = stringScan.next(); //Ignore the entry number
-            String entryName = stringScan.nextLine();
+            entryName = stringScan.nextLine();
             entryName = entryName.substring(1);
-            System.err.println(name);
+
+            String entry = fileScanner.nextLine();
 
             String dataEntry = Parser.getNextLine(fileScanner);
+
             stringScan = new Scanner(dataEntry);
 
             double baseProbability = stringScan.nextDouble();
@@ -101,7 +105,8 @@ public class ListParser
             }
 
 
-            list[i] = new ListEntry(entryName, baseProbability, traits);
+            list[i] = new ListEntry(entry, baseProbability, traits);
+            list[i].setEntryName(entryName);
         }
 
         this.setTraitNames();
@@ -170,8 +175,8 @@ public class ListParser
         }
         catch(IOException e)
         {
+
             System.err.println("ListParser could not locate fileScanner: " + file.getName());
-            System.exit(-1);
         }
     }
 

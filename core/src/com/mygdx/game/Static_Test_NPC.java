@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.io.File;
+
 
 public class Static_Test_NPC {
     private float xPos;
@@ -16,7 +18,7 @@ public class Static_Test_NPC {
     private static final String name = "Eustace";
 
     public Static_Test_NPC(TextureAtlas atlas) {
-        this.texture = new Texture("core\\assets\\DemoRoom3\\npc.png");
+        this.texture = new Texture("DemoRoom3" + File.separator + "npc.png");
 
         this.direction = Direction.DOWN;
         this.xPos = 2040;

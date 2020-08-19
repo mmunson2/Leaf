@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
+import java.io.File;
+
 
 public class Static_Test_NPC2 {
     private float xPos;
@@ -14,7 +16,7 @@ public class Static_Test_NPC2 {
     private static final String name = "Barnaby";
 
     public Static_Test_NPC2() {
-        this.texture = new Texture("core\\assets\\DemoRoom3\\npc2.png");
+        this.texture = new Texture("DemoRoom3" + File.separator + "npc2.png");
 
         this.xPos = 1320;
         this.yPos = 1270;

@@ -3,6 +3,8 @@ package com.mygdx.game.Dino;
 import com.mygdx.game.Dino.Delimiter.Reference;
 import com.mygdx.game.Dino.List.List;
 
+import java.io.File;
+
 
 /*******************************************************************************
  * Dino
@@ -87,7 +89,9 @@ public class Dino
             path += FileTypes.DIALOGUE_EXTENSION;
         }
 
-        DialogueParser parser = new DialogueParser(path);
+        File file = new File(path);
+
+        DialogueParser parser = new DialogueParser(file.getAbsolutePath());
         this.dialogue = parser.getDialogue();
         this.lists = parser.getListArray();
         this.staticVars = parser.getStaticVars();
@@ -345,7 +349,7 @@ public class Dino
      * Gets the name of the trait at the given index
      *
      * @return The trait value, -1 for invalid index
-     * @since 0.5-beta
+     * @since 0.5
      **************************************************************************/
     public double getTraitValue(int index)
     {
@@ -357,19 +361,6 @@ public class Dino
         {
             return this.traitVals[index];
         }
-    }
-
-    /***************************************************************************
-     * getTraitValues
-     *
-     * Gets the name of the trait at the given index
-     *
-     * @return The trait value array
-     * @since 0.5-beta
-     **************************************************************************/
-    public double[] getTraitValues()
-    {
-        return this.traitVals;
     }
 
     /***************************************************************************
