@@ -2,23 +2,32 @@
 # Generated: 2020/08/08 19:13:20
 Name: CONTENT_NO_APOS
 Size: 21
-1: I dont think Ive seen you around here.
+1:
+I dont think Ive seen you around here.
 0.5 NPC2_INTERACTION:0.0:10.0:25.0
-2: A new face; thats rare nowadays.
+2:
+A new face; thats rare nowadays.
 0.0 NPC2_INTERACTION:0.0:10.0:25.0
-3: Have we met before?
+3:
+Have we met before?
 0.5 NPC2_INTERACTION:5.0:20.0:40.0
-4: You remind me of someone.
+4:
+You remind me of someone.
 0.0 NPC2_INTERACTION:20.0:40.0:40.0
-5: How nice of you to stop by.
+5:
+How nice of you to stop by.
 0.0 NPC2_INTERACTION:30.0:50.0:50.0
-6: Whats up?
+6:
+Whats up?
 0.0 NPC2_INTERACTION:40.0:60.0:50.0
-7: Howve you been?
+7:
+Howve you been?
 0.0 NPC2_INTERACTION:50.0:70.0:60.0
-8: I treasure every moment we have together.
+8:
+I treasure every moment we have together.
 0.0 NPC2_INTERACTION:50.0:100.0:70.0
-9: Its always such a blast talking with you.
+9:
+Its always such a blast talking with you.
 0.0 NPC2_INTERACTION:70.0:100.0:70.0
 10: I count the seconds between our talks.
 0.0 NPC2_INTERACTION:90.0:100.0:85.0
